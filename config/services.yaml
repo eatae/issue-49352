@@ -22,3 +22,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    app.encoder.json:
+        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
+
+    # Serializer
+    app.serializer.json:
+        class: 'Symfony\Component\Serializer\Serializer'
+        arguments:
+            0:
+                - '@serializer.normalizer.object'
+            1:
+                - '@app.encoder.json'
