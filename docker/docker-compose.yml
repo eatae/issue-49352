@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - ../:/var/www/apicast
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+
+
+  php-fpm:
+    build:
+      context: ./php-fpm
+    volumes:
+      - ../:/var/www/issue
+    container_name: ${COMPOSE_PROJECT_NAME}-fpm
+    environment:
+          XDEBUG_CONFIG: "client_host=host.docker.internal"
+          PHP_IDE_CONFIG: "serverName=Docker"
+
+  php-cli:
+    build:
+      context: ./php-cli
+    volumes:
+      - ../:/var/www/issue
+    command: sleep 25000
+    container_name: ${COMPOSE_PROJECT_NAME}-cli
+    environment:
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
+      PHP_IDE_CONFIG: "serverName=Docker"
